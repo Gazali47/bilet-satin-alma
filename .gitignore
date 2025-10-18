@@ -1,0 +1,21 @@
+# SQLite Database
+database/*.sqlite
+database/*.db
+
+# PHP
+*.log
+*.tmp
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/

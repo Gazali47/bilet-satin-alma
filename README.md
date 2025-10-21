@@ -177,9 +177,8 @@ Bu proje eğitim amaçlı geliştirilmiştir.
 
 ## 👨‍💻 Geliştirici
 
-- **İsim:** [Adınız]
-- **E-posta:** [E-postanız]
-- **GitHub:** [GitHub Profiliniz]
+- **İsim:** Gazali KEPENÇ
+- **GitHub:** https://github.com/Gazali47
 
 ## 🎉 Teşekkürler
 

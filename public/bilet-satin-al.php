@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../src/config/config.php';
 
-// Sadece user rolü erişebilir
 requireLogin();
 if (!isUser()) {
     setError('Bu sayfaya erişim yetkiniz yok!');
@@ -9,7 +8,6 @@ if (!isUser()) {
     exit();
 }
 
-// Sefer ID kontrolü
 if (!isset($_GET['trip_id']) || empty($_GET['trip_id'])) {
     setError('Geçersiz sefer!');
     header('Location: /index.php');
@@ -18,7 +16,6 @@ if (!isset($_GET['trip_id']) || empty($_GET['trip_id'])) {
 
 $tripId = (int)$_GET['trip_id'];
 
-// Sefer bilgilerini al
 $stmt = $db->prepare("
     SELECT t.*, b.name as company_name 
     FROM Trips t 
@@ -34,7 +31,6 @@ if (!$trip) {
     exit();
 }
 
-// Dolu koltukları al
 $stmtSeats = $db->prepare("
     SELECT bs.seat_number 
     FROM Tickets ti
@@ -44,10 +40,8 @@ $stmtSeats = $db->prepare("
 $stmtSeats->execute([':trip_id' => $tripId]);
 $bookedSeats = $stmtSeats->fetchAll(PDO::FETCH_COLUMN);
 
-// Kullanıcı bilgilerini al
 $currentUser = $auth->getCurrentUser();
 
-// Form gönderimi
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $selectedSeats = isset($_POST['seats']) ? $_POST['seats'] : [];
     $couponCode = isset($_POST['coupon_code']) ? trim($_POST['coupon_code']) : '';
@@ -55,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($selectedSeats)) {
         setError('Lütfen en az bir koltuk seçiniz!');
     } else {
-        // Seçilen koltukların müsait olup olmadığını kontrol et
         $valid = true;
         foreach ($selectedSeats as $seat) {
             if (in_array($seat, $bookedSeats)) {
@@ -69,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $totalPrice = $trip['price'] * count($selectedSeats);
             $discount = 0;
             
-            // Kupon kontrolü
             if (!empty($couponCode)) {
                 $stmtCoupon = $db->prepare("
                     SELECT * FROM Coupons 
@@ -86,14 +78,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             
-            // Kredi kontrolü
             if ($currentUser['balance'] < $totalPrice) {
                 setError('Yetersiz bakiye! Bakiyeniz: ' . formatPrice($currentUser['balance']));
             } else {
                 try {
                     $db->beginTransaction();
                     
-                    // Ticket oluştur
                     $stmtTicket = $db->prepare("
                         INSERT INTO Tickets (trip_id, user_id, status, total_price) 
                         VALUES (:trip_id, :user_id, 'ACTIVE', :total_price)
@@ -106,7 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     $ticketId = $db->lastInsertId();
                     
-                    // Koltukları rezerve et
                     $stmtSeat = $db->prepare("
                         INSERT INTO Booked_Seats (ticket_id, seat_number) 
                         VALUES (:ticket_id, :seat_number)
@@ -119,7 +108,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         ]);
                     }
                     
-                    // Kullanıcı bakiyesini düş
                     $stmtBalance = $db->prepare("
                         UPDATE User SET balance = balance - :amount WHERE id = :user_id
                     ");
@@ -128,7 +116,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         ':user_id' => $currentUser['id']
                     ]);
                     
-                    // Kupon kullanıldıysa usage_limit'i azalt
                     if (!empty($couponCode) && isset($coupon)) {
                         $stmtUpdateCoupon = $db->prepare("
                             UPDATE Coupons SET usage_limit = usage_limit - 1 WHERE id = :id
@@ -138,7 +125,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     $db->commit();
                     
-                    // Session'daki bakiyeyi güncelle
                     $_SESSION['balance'] = $currentUser['balance'] - $totalPrice;
                     
                     setSuccess('Biletiniz başarıyla satın alındı!');
@@ -159,7 +145,7 @@ require_once __DIR__ . '/../src/includes/header.php';
 ?>
 
 <div class="card">
-    <h2>🎫 Bilet Satın Al</h2>
+    <h2>Bilet Satın Al</h2>
     
     <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
         <h3><?php echo clean($trip['company_name']); ?></h3>
@@ -168,13 +154,13 @@ require_once __DIR__ . '/../src/includes/header.php';
             <strong><?php echo clean($trip['destination_city']); ?></strong>
         </p>
         <p style="margin: 5px 0;">
-            📅 <?php echo date('d.m.Y H:i', strtotime($trip['departure_time'])); ?>
+            <?php echo date('d.m.Y H:i', strtotime($trip['departure_time'])); ?>
         </p>
         <p style="margin: 5px 0;">
-            💰 Koltuk Başı: <strong><?php echo formatPrice($trip['price']); ?></strong>
+            Koltuk Başı: <strong><?php echo formatPrice($trip['price']); ?></strong>
         </p>
         <p style="margin: 5px 0;">
-            💳 Bakiyeniz: <strong><?php echo formatPrice($currentUser['balance']); ?></strong>
+            Bakiyeniz: <strong><?php echo formatPrice($currentUser['balance']); ?></strong>
         </p>
     </div>
     

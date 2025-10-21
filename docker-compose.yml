@@ -1,0 +1,13 @@
+services:
+  web:
+    build: .
+    container_name: bilet-platform
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public:/var/www/html/public
+      - ./src:/var/www/html/src
+      - ./database:/var/www/html/database
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html/public
+    restart: unless-stopped

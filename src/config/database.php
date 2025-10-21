@@ -5,7 +5,13 @@ class Database {
     private $connection;
     
     private function __construct() {
-        $dbPath = __DIR__ . '/../../database/database.sqlite';
+        // Veritabanı dizinini oluştur
+        $dbDir = __DIR__ . '/../../database';
+        if (!file_exists($dbDir)) {
+            mkdir($dbDir, 0777, true);
+        }
+        
+        $dbPath = $dbDir . '/database.sqlite';
         
         try {
             $this->connection = new PDO('sqlite:' . $dbPath);
@@ -15,7 +21,7 @@ class Database {
             // Veritabanını başlat
             $this->initDatabase();
         } catch(PDOException $e) {
-            die("Veritabanı bağlantı hatası: " . $e->getMessage());
+            die("Veritabanı bağlantı hatası: " . $e->getMessage() . "<br>Yol: " . $dbPath);
         }
     }
     

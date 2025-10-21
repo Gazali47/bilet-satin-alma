@@ -27,7 +27,7 @@
                         <a href="/admin/index.php">Admin Paneli</a>
                     <?php endif; ?>
                     
-                    <a href="/logout.php">Çıkış Yap (<?php echo clean($_SESSION['full_name']); ?>)</a>
+                    <a href="/logout.php">Çıkış Yap (<?php echo clean($_SESSION['email']); ?>)</a>
                     
                 <?php else: ?>
                     <a href="/login.php">Giriş Yap</a>

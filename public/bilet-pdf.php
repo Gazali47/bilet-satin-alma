@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../src/config/config.php';
 
-// Sadece user rolü erişebilir
 requireLogin();
 if (!isUser()) {
     die('Yetkisiz erişim!');
@@ -9,15 +8,13 @@ if (!isUser()) {
 
 $currentUser = $auth->getCurrentUser();
 
-// Bilet ID kontrolü
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     die('Geçersiz bilet!');
 }
 
 $ticketId = (int)$_GET['id'];
 
-// Bilet bilgilerini al
-$stmt = $db->prepare("
+$stmt = $db->prepare(" 
     SELECT 
         ti.*,
         tr.departure_city,
@@ -43,7 +40,6 @@ if (!$ticket) {
     die('Bilet bulunamadı veya iptal edilmiş!');
 }
 
-// PDF header
 header('Content-Type: application/pdf');
 header('Content-Disposition: inline; filename="bilet_' . $ticketId . '.pdf"');
 ?>
@@ -166,10 +162,9 @@ header('Content-Disposition: inline; filename="bilet_' . $ticketId . '.pdf"');
         </div>
     </div>
     
-    <script>
-        // Sayfayı yazdır
+    <script>        
         window.onload = function() {
-            window.print();
+            window.print(); // Sayfayı yazdırıyoruz 
         }
     </script>
 </body>

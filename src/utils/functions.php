@@ -17,6 +17,8 @@ function isAdmin() {
 }
 
 function isFirmaAdmin() {
+    global $auth;
+
     return hasRole('company_admin');
 }
 
@@ -25,6 +27,8 @@ function isUser() {
 }
 
 function requireLogin() {
+    global $auth;
+
     if (!isLoggedIn()) {
         header('Location: /login.php');
         exit();

@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../../src/config/config.php';
-
 require_once __DIR__ . '/../../src/includes/auth.php';
 
 requireLogin();
@@ -12,7 +11,6 @@ if (!isFirmaAdmin()) {
 
 $currentUser = $auth->getCurrentUser();
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $departureCity = trim($_POST['departure_city']);
     $destinationCity = trim($_POST['destination_city']);
@@ -20,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $arrivalTime = trim($_POST['arrival_time']);
     $price = (float)$_POST['price'];
     $capacity = (int)$_POST['capacity'];
-    
     
     if (empty($departureCity) || empty($destinationCity) || empty($departureTime) || empty($arrivalTime)) {
         setError('Tüm alanları doldurmanız gerekmektedir!');

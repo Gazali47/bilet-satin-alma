@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../src/config/config.php';
+require_once __DIR__ . '/../src/includes/auth.php';
 
 requireLogin();
 if (!isUser()) {
@@ -145,7 +146,7 @@ require_once __DIR__ . '/../src/includes/header.php';
 ?>
 
 <div class="card">
-    <h2>Bilet Satın Al</h2>
+    <h2>🎫 Bilet Satın Al</h2>
     
     <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
         <h3><?php echo clean($trip['company_name']); ?></h3>
@@ -154,13 +155,13 @@ require_once __DIR__ . '/../src/includes/header.php';
             <strong><?php echo clean($trip['destination_city']); ?></strong>
         </p>
         <p style="margin: 5px 0;">
-            <?php echo date('d.m.Y H:i', strtotime($trip['departure_time'])); ?>
+            📅 <?php echo date('d.m.Y H:i', strtotime($trip['departure_time'])); ?>
         </p>
         <p style="margin: 5px 0;">
-            Koltuk Başı: <strong><?php echo formatPrice($trip['price']); ?></strong>
+            💰 Koltuk Başı: <strong><?php echo formatPrice($trip['price']); ?></strong>
         </p>
         <p style="margin: 5px 0;">
-            Bakiyeniz: <strong><?php echo formatPrice($currentUser['balance']); ?></strong>
+            💳 Bakiyeniz: <strong><?php echo formatPrice($currentUser['balance']); ?></strong>
         </p>
     </div>
     

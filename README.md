@@ -1,8 +1,8 @@
-# 🚌 Bilet Satın Alma Platformu
+#  Bilet Satın Alma Platformu
 
 Otobüs bileti satış ve yönetim sistemi. PHP, SQLite ve Docker kullanılarak geliştirilmiştir.
 
-## 🎯 Özellikler
+##  Özellikler
 
 ### Ziyaretçi (Giriş Yapmamış Kullanıcı)
 - ✅ Sefer arama ve listeleme
@@ -31,14 +31,14 @@ Otobüs bileti satış ve yönetim sistemi. PHP, SQLite ve Docker kullanılarak 
 - ✅ Tüm sistem verilerine erişim
 - ✅ İstatistik ve raporlama
 
-## 🛠️ Teknolojiler
+##  Teknolojiler
 
 - **Backend:** PHP 8.1
 - **Veritabanı:** SQLite
 - **Frontend:** HTML, CSS, JavaScript
 - **Container:** Docker
 
-## 📦 Kurulum
+##  Kurulum
 
 ### Gereksinimler
 - Docker
@@ -48,7 +48,7 @@ Otobüs bileti satış ve yönetim sistemi. PHP, SQLite ve Docker kullanılarak 
 
 1. **Projeyi klonlayın:**
 ```bash
-git clone https://github.com/KULLANICIADI/bilet-satin-alma.git
+git clone https://github.com/Gazali47/bilet-satin-alma.git
 cd bilet-satin-alma
 ```
 
@@ -64,7 +64,7 @@ http://localhost:8080
 
 Veritabanı otomatik olarak oluşturulacak ve örnek veriler eklenecektir.
 
-## 👥 Demo Hesaplar
+##  Demo Hesaplar
 
 ### Admin Hesabı
 - **E-posta:** admin@bilet.com
@@ -81,7 +81,7 @@ Veritabanı otomatik olarak oluşturulacak ve örnek veriler eklenecektir.
 - **Şifre:** user123
 - **Bakiye:** 1000 ₺
 
-## 📁 Proje Yapısı
+##  Proje Yapısı
 
 ```
 bilet-satin-alma/
@@ -105,7 +105,7 @@ bilet-satin-alma/
 └── README.md
 ```
 
-## 🗄️ Veritabanı Şeması
+##  Veritabanı Şeması
 
 - **Bus_Company:** Otobüs firmaları
 - **User:** Kullanıcılar (Admin, Firma Admin, User)
@@ -115,7 +115,7 @@ bilet-satin-alma/
 - **Coupons:** İndirim kuponları
 - **User_Coupons:** Kullanıcı-kupon ilişkisi
 
-## 🔒 Güvenlik
+##  Güvenlik
 
 - ✅ Password hashing (bcrypt)
 - ✅ SQL Injection koruması (PDO prepared statements)
@@ -123,7 +123,7 @@ bilet-satin-alma/
 - ✅ Session yönetimi
 - ✅ Rol bazlı yetkilendirme
 
-## 📝 Kullanım Senaryoları
+##  Kullanım Senaryoları
 
 ### Bilet Satın Alma
 1. Kullanıcı kayıt olur veya giriş yapar
@@ -153,7 +153,7 @@ bilet-satin-alma/
 4. İndirim kuponları oluşturur
 5. Sistem istatistiklerini görüntüler
 
-## 🚀 Geliştirme
+##  Geliştirme
 
 ### Docker'ı yeniden build etme:
 ```bash
@@ -171,15 +171,7 @@ docker-compose logs -f
 docker exec -it bilet-platform bash
 ```
 
-## 📄 Lisans
-
-Bu proje eğitim amaçlı geliştirilmiştir.
-
-## 👨‍💻 Geliştirici
+##  Geliştirici
 
 - **İsim:** Gazali KEPENÇ
 - **GitHub:** https://github.com/Gazali47
-
-## 🎉 Teşekkürler
-
-Bu projeyi kullandığınız için teşekkür ederiz!

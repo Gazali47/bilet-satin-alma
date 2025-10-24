@@ -96,7 +96,6 @@ require_once __DIR__ . '/../src/includes/header.php';
                 <tbody>
                     <?php foreach ($trips as $trip): ?>
                         <?php
-                        // Dolu koltuk sayısını hesapla
                         $stmtSeats = $db->prepare("
                             SELECT COUNT(*) as booked_count 
                             FROM Tickets ti

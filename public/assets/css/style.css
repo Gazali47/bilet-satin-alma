@@ -16,7 +16,6 @@ body {
     padding: 20px;
 }
 
-/* Header */
 header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -47,7 +46,6 @@ header nav a:hover {
     background: rgba(255,255,255,0.2);
 }
 
-/* Alerts */
 .alert {
     padding: 15px;
     margin-bottom: 20px;
@@ -73,7 +71,6 @@ header nav a:hover {
     border: 1px solid #bee5eb;
 }
 
-/* Cards */
 .card {
     background: white;
     border-radius: 10px;
@@ -87,7 +84,6 @@ header nav a:hover {
     color: #333;
 }
 
-/* Forms */
 .form-group {
     margin-bottom: 20px;
 }
@@ -117,7 +113,6 @@ header nav a:hover {
     border-color: #667eea;
 }
 
-/* Buttons */
 .btn {
     padding: 12px 25px;
     border: none;
@@ -172,7 +167,6 @@ header nav a:hover {
     cursor: not-allowed;
 }
 
-/* Table */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -201,7 +195,6 @@ table tbody tr:hover {
     background-color: #f8f9fa;
 }
 
-/* Seat Selection */
 .seats-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -236,7 +229,6 @@ table tbody tr:hover {
     opacity: 0.6;
 }
 
-/* Grid Layout */
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -244,7 +236,6 @@ table tbody tr:hover {
     margin: 20px 0;
 }
 
-/* Footer */
 footer {
     background-color: #333;
     color: white;
@@ -253,7 +244,6 @@ footer {
     margin-top: 50px;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     header .container {
         flex-direction: column;

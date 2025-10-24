@@ -1,10 +1,15 @@
 <?php
+// src/includes/auth.php
 
 class Auth {
     private $db;
     
     public function __construct($database) {
         $this->db = $database;
+        // Session'ı burada başlat
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
     }
     
     public function register($fullName, $email, $password) {
@@ -66,4 +71,24 @@ class Auth {
         $stmt->execute([':id' => $_SESSION['user_id']]);
         return $stmt->fetch();
     }
+    
+    public function isLoggedIn() {
+        return isset($_SESSION['user_id']);
+    }
+    
+    public function isFirmaAdmin() {
+        return $this->isLoggedIn() && $_SESSION['role'] === 'firma_admin';
+    }
+    
+    public function isUser() {
+        return $this->isLoggedIn() && $_SESSION['role'] === 'user';
+    }
+    
+    public function isAdmin() {
+        return $this->isLoggedIn() && $_SESSION['role'] === 'admin';
+    }
 }
+
+// CLASS DIŞINDA global auth nesnesi oluştur
+global $auth;
+$auth = new Auth($db);

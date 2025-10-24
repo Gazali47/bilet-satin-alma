@@ -1,7 +1,7 @@
 <?php
 
 function clean($data) {
-    return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
 }
 
 function isLoggedIn() {
@@ -17,9 +17,7 @@ function isAdmin() {
 }
 
 function isFirmaAdmin() {
-    global $auth;
-
-    return hasRole('company_admin');
+    return hasRole('company_admin'); 
 }
 
 function isUser() {
@@ -27,8 +25,6 @@ function isUser() {
 }
 
 function requireLogin() {
-    global $auth;
-
     if (!isLoggedIn()) {
         header('Location: /login.php');
         exit();

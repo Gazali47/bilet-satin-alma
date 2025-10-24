@@ -2,13 +2,11 @@
 require_once __DIR__ . '/../src/config/config.php';
 require_once __DIR__ . '/../src/includes/auth.php';
 
-// Zaten giriş yapmışsa ana sayfaya yönlendir
 if (isLoggedIn()) {
     header('Location: /index.php');
     exit();
 }
 
-// Form gönderildiyse
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
@@ -21,12 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result['success']) {
             setSuccess($result['message']);
             
-            // Rol bazlı yönlendirme
-            if ($result['role'] == 'admin') { // Admin
+            if ($result['role'] == 'admin') { 
                 header('Location: /admin/index.php');
-            } elseif ($result['role'] == 'company_admin') { // Firma Admin
+            } elseif ($result['role'] == 'company_admin') { 
                 header('Location: /firma-admin/index.php');
-            } else { // User
+            } else { 
                 header('Location: /index.php');
             }
             exit();

@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/../../src/config/config.php';
 
-// Sadece admin rolü erişebilir
+require_once __DIR__ . '/../../src/includes/auth.php';
+
 requireLogin();
 if (!isAdmin()) {
     setError('Bu sayfaya erişim yetkiniz yok!');
@@ -9,7 +10,6 @@ if (!isAdmin()) {
     exit();
 }
 
-// Kupon ekleme
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_coupon'])) {
     $code = strtoupper(trim($_POST['code']));
     $discount = (float)$_POST['discount'];
@@ -42,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_coupon'])) {
     exit();
 }
 
-// Kupon silme
 if (isset($_GET['delete']) && !empty($_GET['delete'])) {
     $couponId = (int)$_GET['delete'];
     
@@ -58,7 +57,6 @@ if (isset($_GET['delete']) && !empty($_GET['delete'])) {
     exit();
 }
 
-// Kuponları al
 $stmt = $db->query("
     SELECT 
         c.*,

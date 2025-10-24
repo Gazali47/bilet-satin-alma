@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/../../src/config/config.php';
 
-// Sadece firma admin rolü erişebilir
+require_once __DIR__ . '/../../src/includes/auth.php';
+
 requireLogin();
 if (!isFirmaAdmin()) {
     setError('Bu sayfaya erişim yetkiniz yok!');
@@ -11,7 +12,7 @@ if (!isFirmaAdmin()) {
 
 $currentUser = $auth->getCurrentUser();
 
-// Form gönderimi
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $departureCity = trim($_POST['departure_city']);
     $destinationCity = trim($_POST['destination_city']);
@@ -20,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $price = (float)$_POST['price'];
     $capacity = (int)$_POST['capacity'];
     
-    // Doğrulama
+    
     if (empty($departureCity) || empty($destinationCity) || empty($departureTime) || empty($arrivalTime)) {
         setError('Tüm alanları doldurmanız gerekmektedir!');
     } elseif ($price <= 0) {

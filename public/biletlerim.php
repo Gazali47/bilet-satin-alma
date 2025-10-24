@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../src/config/config.php';
 
-// Sadece user rolü erişebilir
 requireLogin();
 if (!isUser()) {
     setError('Bu sayfaya erişim yetkiniz yok!');
@@ -11,11 +10,9 @@ if (!isUser()) {
 
 $currentUser = $auth->getCurrentUser();
 
-// Bilet iptal işlemi
 if (isset($_GET['cancel']) && !empty($_GET['cancel'])) {
     $ticketId = (int)$_GET['cancel'];
     
-    // Bilet sahibi mi kontrol et
     $stmt = $db->prepare("
         SELECT ti.*, tr.departure_time, tr.price 
         FROM Tickets ti
@@ -26,22 +23,18 @@ if (isset($_GET['cancel']) && !empty($_GET['cancel'])) {
     $ticket = $stmt->fetch();
     
     if ($ticket) {
-        // Kalkışa 1 saatten fazla var mı?
         if (canCancelTicket(date('Y-m-d', strtotime($ticket['departure_time'])), date('H:i:s', strtotime($ticket['departure_time'])))) {
             try {
                 $db->beginTransaction();
                 
-                // Bileti iptal et
                 $stmtCancel = $db->prepare("UPDATE Tickets SET status = 'CANCELLED' WHERE id = :id");
                 $stmtCancel->execute([':id' => $ticketId]);
                 
-                // Para iadesini yap
                 $stmtRefund = $db->prepare("UPDATE User SET balance = balance + :amount WHERE id = :user_id");
                 $stmtRefund->execute([':amount' => $ticket['total_price'], ':user_id' => $currentUser['id']]);
                 
                 $db->commit();
                 
-                // Session'daki bakiyeyi güncelle
                 $_SESSION['balance'] = $currentUser['balance'] + $ticket['total_price'];
                 
                 setSuccess('Bilet başarıyla iptal edildi. ' . formatPrice($ticket['total_price']) . ' hesabınıza iade edildi.');
@@ -60,7 +53,6 @@ if (isset($_GET['cancel']) && !empty($_GET['cancel'])) {
     exit();
 }
 
-// Kullanıcının biletlerini al
 $stmt = $db->prepare("
     SELECT 
         ti.*,

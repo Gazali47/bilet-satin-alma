@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../src/config/config.php';
 
-// Sefer arama
 $trips = [];
 $searchPerformed = false;
 

@@ -2,20 +2,17 @@
 require_once __DIR__ . '/../src/config/config.php';
 require_once __DIR__ . '/../src/includes/auth.php';
 
-// Zaten giriş yapmışsa ana sayfaya yönlendir
 if (isLoggedIn()) {
     header('Location: /index.php');
     exit();
 }
 
-// Form gönderildiyse
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fullName = trim($_POST['full_name']);
     $email = trim($_POST['email']);
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirm_password'];
     
-    // Doğrulama
     if (empty($fullName) || empty($email) || empty($password) || empty($confirmPassword)) {
         setError('Tüm alanları doldurmanız gerekmektedir!');
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -25,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($password !== $confirmPassword) {
         setError('Şifreler eşleşmiyor!');
     } else {
-        // Kayıt işlemi
         $result = $auth->register($fullName, $email, $password);
         
         if ($result['success']) {

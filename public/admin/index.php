@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../src/config/config.php';
+require_once __DIR__ . '/../../src/includes/auth.php';
 
-// Sadece admin rolü erişebilir
 requireLogin();
 if (!isAdmin()) {
     setError('Bu sayfaya erişim yetkiniz yok!');
@@ -9,30 +9,23 @@ if (!isAdmin()) {
     exit();
 }
 
-// İstatistikler
 $stats = [];
 
-// Toplam firma sayısı
 $stmt = $db->query("SELECT COUNT(*) as count FROM Bus_Company");
 $stats['companies'] = $stmt->fetch()['count'];
 
-// Toplam kullanıcı sayısı
 $stmt = $db->query("SELECT COUNT(*) as count FROM User WHERE role = 'user'");
 $stats['users'] = $stmt->fetch()['count'];
 
-// Toplam sefer sayısı
 $stmt = $db->query("SELECT COUNT(*) as count FROM Trips");
 $stats['trips'] = $stmt->fetch()['count'];
 
-// Toplam bilet satışı
 $stmt = $db->query("SELECT COUNT(*) as count FROM Tickets WHERE status = 'ACTIVE'");
 $stats['tickets'] = $stmt->fetch()['count'];
 
-// Toplam gelir
 $stmt = $db->query("SELECT SUM(total_price) as total FROM Tickets WHERE status = 'ACTIVE'");
 $stats['revenue'] = $stmt->fetch()['total'] ?? 0;
 
-// Son biletler
 $stmt = $db->query("
     SELECT 
         ti.*,

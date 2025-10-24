@@ -1,4 +1,4 @@
-</div> <!-- container kapatma -->
+</div> 
     
     <footer>
         <p>&copy; <?php echo date('Y'); ?> Bilet Satın Alma Platformu. Tüm hakları saklıdır.</p>

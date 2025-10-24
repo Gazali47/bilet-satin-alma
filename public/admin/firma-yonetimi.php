@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/../../src/config/config.php';
 
-// Sadece admin rolü erişebilir
+require_once __DIR__ . '/../../src/includes/auth.php';
+
 requireLogin();
 if (!isAdmin()) {
     setError('Bu sayfaya erişim yetkiniz yok!');
@@ -9,7 +10,6 @@ if (!isAdmin()) {
     exit();
 }
 
-// Firma ekleme
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_company'])) {
     $companyName = trim($_POST['company_name']);
     
@@ -29,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_company'])) {
     exit();
 }
 
-// Firma silme
 if (isset($_GET['delete']) && !empty($_GET['delete'])) {
     $companyId = (int)$_GET['delete'];
     
@@ -45,7 +44,6 @@ if (isset($_GET['delete']) && !empty($_GET['delete'])) {
     exit();
 }
 
-// Firma düzenleme
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_company'])) {
     $companyId = (int)$_POST['company_id'];
     $companyName = trim($_POST['company_name']);
@@ -66,7 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_company'])) {
     exit();
 }
 
-// Firmaları al
 $stmt = $db->query("
     SELECT 
         bc.*,
@@ -137,7 +134,6 @@ require_once __DIR__ . '/../../src/includes/header.php';
     <?php endif; ?>
 </div>
 
-<!-- Düzenleme Modal -->
 <div id="editModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
     <div class="card" style="max-width: 500px; margin: 100px auto; position: relative;">
         <h3>Firma Düzenle</h3>

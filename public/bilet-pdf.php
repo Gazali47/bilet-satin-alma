@@ -164,7 +164,7 @@ header('Content-Disposition: inline; filename="bilet_' . $ticketId . '.pdf"');
     
     <script>        
         window.onload = function() {
-            window.print(); // Sayfayı yazdırıyoruz 
+            window.print(); 
         }
     </script>
 </body>

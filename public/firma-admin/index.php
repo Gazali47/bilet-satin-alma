@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/../../src/config/config.php';
 
-// Sadece firma admin rolü erişebilir
+require_once __DIR__ . '/../../src/includes/auth.php';
+
 requireLogin();
 if (!isFirmaAdmin()) {
     setError('Bu sayfaya erişim yetkiniz yok!');
@@ -11,12 +12,10 @@ if (!isFirmaAdmin()) {
 
 $currentUser = $auth->getCurrentUser();
 
-// Firma bilgilerini al
 $stmt = $db->prepare("SELECT * FROM Bus_Company WHERE id = :id");
 $stmt->execute([':id' => $currentUser['company_id']]);
 $company = $stmt->fetch();
 
-// Firmaya ait seferleri al
 $stmt = $db->prepare("
     SELECT 
         t.*,
@@ -30,17 +29,14 @@ $stmt = $db->prepare("
 $stmt->execute([':company_id' => $currentUser['company_id']]);
 $trips = $stmt->fetchAll();
 
-// Sefer silme
 if (isset($_GET['delete']) && !empty($_GET['delete'])) {
     $tripId = (int)$_GET['delete'];
     
-    // Firmaya ait mi kontrol et
     $stmtCheck = $db->prepare("SELECT id FROM Trips WHERE id = :id AND company_id = :company_id");
     $stmtCheck->execute([':id' => $tripId, ':company_id' => $currentUser['company_id']]);
     
     if ($stmtCheck->fetch()) {
         try {
-            // Sefer silindiğinde ilişkili biletler de silinir (CASCADE)
             $stmtDelete = $db->prepare("DELETE FROM Trips WHERE id = :id");
             $stmtDelete->execute([':id' => $tripId]);
             

@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../src/config/config.php';
+require_once __DIR__ . '/../../src/includes/auth.php';
 
-// Sadece admin rolü erişebilir
 requireLogin();
 if (!isAdmin()) {
     setError('Bu sayfaya erişim yetkiniz yok!');
@@ -9,7 +9,6 @@ if (!isAdmin()) {
     exit();
 }
 
-// Firma Admin ekleme
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_admin'])) {
     $fullName = trim($_POST['full_name']);
     $email = trim($_POST['email']);
@@ -43,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_admin'])) {
     exit();
 }
 
-// Kullanıcı silme
 if (isset($_GET['delete']) && !empty($_GET['delete'])) {
     $userId = (int)$_GET['delete'];
     
@@ -59,11 +57,9 @@ if (isset($_GET['delete']) && !empty($_GET['delete'])) {
     exit();
 }
 
-// Firmaları al
 $stmtCompanies = $db->query("SELECT * FROM Bus_Company ORDER BY name ASC");
 $companies = $stmtCompanies->fetchAll();
 
-// Kullanıcıları al
 $stmt = $db->query("
     SELECT 
         u.*,

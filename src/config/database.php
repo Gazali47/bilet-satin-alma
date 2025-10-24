@@ -5,7 +5,6 @@ class Database {
     private $connection;
     
     private function __construct() {
-        // Veritabanı dizinini oluştur
         $dbDir = __DIR__ . '/../../database';
         if (!file_exists($dbDir)) {
             mkdir($dbDir, 0777, true);
@@ -18,7 +17,6 @@ class Database {
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             
-            // Veritabanını başlat
             $this->initDatabase();
         } catch(PDOException $e) {
             die("Veritabanı bağlantı hatası: " . $e->getMessage() . "<br>Yol: " . $dbPath);
@@ -37,7 +35,6 @@ class Database {
     }
     
     private function initDatabase() {
-        // 1. Bus_Company Tablosu
         $this->connection->exec("
             CREATE TABLE IF NOT EXISTS Bus_Company (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -47,7 +44,6 @@ class Database {
             )
         ");
         
-        // 2. User Tablosu
         $this->connection->exec("
             CREATE TABLE IF NOT EXISTS User (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -62,7 +58,6 @@ class Database {
             )
         ");
         
-        // 3. Trips Tablosu
         $this->connection->exec("
             CREATE TABLE IF NOT EXISTS Trips (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -78,7 +73,6 @@ class Database {
             )
         ");
         
-        // 4. Tickets Tablosu
         $this->connection->exec("
             CREATE TABLE IF NOT EXISTS Tickets (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -92,7 +86,6 @@ class Database {
             )
         ");
         
-        // 5. Booked_Seats Tablosu
         $this->connection->exec("
             CREATE TABLE IF NOT EXISTS Booked_Seats (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -104,7 +97,6 @@ class Database {
             )
         ");
         
-        // 6. Coupons Tablosu
         $this->connection->exec("
             CREATE TABLE IF NOT EXISTS Coupons (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -116,7 +108,6 @@ class Database {
             )
         ");
         
-        // 7. User_Coupons Tablosu
         $this->connection->exec("
             CREATE TABLE IF NOT EXISTS User_Coupons (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -128,25 +119,21 @@ class Database {
             )
         ");
         
-        // Varsayılan verileri ekle
         $this->insertDefaultData();
     }
     
     private function insertDefaultData() {
-        // Admin kullanıcısı var mı kontrol et
         $stmt = $this->connection->prepare("SELECT COUNT(*) as count FROM User WHERE role = 'admin'");
         $stmt->execute();
         $result = $stmt->fetch();
         
         if ($result['count'] == 0) {
-            // Admin ekle (şifre: admin123)
             $hashedPassword = password_hash('admin123', PASSWORD_DEFAULT);
             $this->connection->exec("
                 INSERT INTO User (full_name, email, role, password, company_id, balance) 
                 VALUES ('Admin', 'admin@bilet.com', 'admin', '$hashedPassword', NULL, 0)
             ");
             
-            // Örnek firmalar ekle
             $this->connection->exec("
                 INSERT INTO Bus_Company (name) VALUES 
                 ('Metro Turizm'),
@@ -154,21 +141,18 @@ class Database {
                 ('Kamil Koç')
             ");
             
-            // Firma admin ekle (şifre: firma123)
             $hashedPassword2 = password_hash('firma123', PASSWORD_DEFAULT);
             $this->connection->exec("
                 INSERT INTO User (full_name, email, role, password, company_id, balance) 
                 VALUES ('Firma Admin', 'firma@metro.com', 'company_admin', '$hashedPassword2', 1, 0)
             ");
             
-            // Normal kullanıcı ekle (şifre: user123)
             $hashedPassword3 = password_hash('user123', PASSWORD_DEFAULT);
             $this->connection->exec("
                 INSERT INTO User (full_name, email, role, password, company_id, balance) 
                 VALUES ('Test User', 'user@test.com', 'user', '$hashedPassword3', NULL, 1000.0)
             ");
             
-            // Örnek seferler ekle
             $this->connection->exec("
                 INSERT INTO Trips (company_id, destination_city, arrival_time, departure_time, departure_city, price, capacity) 
                 VALUES 
@@ -178,7 +162,6 @@ class Database {
                 (3, 'Konya', '2025-10-20 12:00:00', '2025-10-20 08:00:00', 'Ankara', 150, 45)
             ");
             
-            // Örnek kuponlar ekle
             $this->connection->exec("
                 INSERT INTO Coupons (code, discount, usage_limit, expire_date) 
                 VALUES 
@@ -190,5 +173,4 @@ class Database {
     }
 }
 
-// Veritabanı bağlantısını başlat
 $db = Database::getInstance()->getConnection();

@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../src/config/config.php';
 
-// Sefer ID kontrolü
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     setError('Geçersiz sefer!');
     header('Location: /index.php');
@@ -10,7 +9,6 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $tripId = (int)$_GET['id'];
 
-// Sefer bilgilerini al
 $stmt = $db->prepare("
     SELECT t.*, b.name as company_name, b.logo_path 
     FROM Trips t 
@@ -26,7 +24,6 @@ if (!$trip) {
     exit();
 }
 
-// Dolu koltukları al
 $stmtSeats = $db->prepare("
     SELECT bs.seat_number 
     FROM Tickets ti

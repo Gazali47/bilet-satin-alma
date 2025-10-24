@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/../../src/config/config.php';
 
-// Sadece firma admin rolü erişebilir
+require_once __DIR__ . '/../../src/includes/auth.php';
+
 requireLogin();
 if (!isFirmaAdmin()) {
     setError('Bu sayfaya erişim yetkiniz yok!');
@@ -11,7 +12,6 @@ if (!isFirmaAdmin()) {
 
 $currentUser = $auth->getCurrentUser();
 
-// Sefer ID kontrolü
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     setError('Geçersiz sefer!');
     header('Location: /firma-admin/index.php');
@@ -20,7 +20,6 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $tripId = (int)$_GET['id'];
 
-// Seferi al ve firmaya ait mi kontrol et
 $stmt = $db->prepare("SELECT * FROM Trips WHERE id = :id AND company_id = :company_id");
 $stmt->execute([':id' => $tripId, ':company_id' => $currentUser['company_id']]);
 $trip = $stmt->fetch();
@@ -31,7 +30,6 @@ if (!$trip) {
     exit();
 }
 
-// Form gönderimi
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $departureCity = trim($_POST['departure_city']);
     $destinationCity = trim($_POST['destination_city']);
@@ -40,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $price = (float)$_POST['price'];
     $capacity = (int)$_POST['capacity'];
     
-    // Doğrulama
     if (empty($departureCity) || empty($destinationCity) || empty($departureTime) || empty($arrivalTime)) {
         setError('Tüm alanları doldurmanız gerekmektedir!');
     } elseif ($price <= 0) {
